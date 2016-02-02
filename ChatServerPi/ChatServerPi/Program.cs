@@ -69,12 +69,9 @@ namespace ChatServerPi
     {
         public string UserName { get; set; }
         public TcpClient Client { get; set; }
-        //public Thread ListenThread { get; set; }
 
         public void StartListening()
         {
-            //Thread listenThread = new Thread(new ThreadStart(ListenToClient));
-            //listenThread.Start();
             Thread ListenThread = new Thread(new ThreadStart(ListenToClient));
             ListenThread.Start();
         }
@@ -94,8 +91,6 @@ namespace ChatServerPi
                     Program.DisconnectUser(this);
                     break;
                 }
-                //Varför broadcastas ändå ett tomt meddelande? Undersök. -- FIXAT
-                Console.WriteLine("Storlek: " + messageSize);
                 string msg = Encoding.Unicode.GetString(messageBuffer, 0, messageBuffer.Length).TrimEnd('\0');
                 Console.WriteLine(UserName + " wrote: " + msg);
                 Program.Broadcast(UserName, msg);
