@@ -49,7 +49,7 @@ namespace ChatServerPi
                 }
                 catch
                 {
-                    Console.WriteLine("ERROR VID BROADCAST!");
+                    Console.WriteLine("ERROR VID BROADCAST! " + client.UserName + ", " + clientList.Count);
                 }
 
             }
