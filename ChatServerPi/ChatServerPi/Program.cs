@@ -61,6 +61,7 @@ namespace ChatServerPi
             user.Client.Close();
             clientList.Remove(user);
             Broadcast("", user.UserName + " has left the chat.");
+            user.ListenThread.Abort();
             user = null;
         }
     }
@@ -68,11 +69,14 @@ namespace ChatServerPi
     {
         public string UserName { get; set; }
         public TcpClient Client { get; set; }
+        public Thread ListenThread { get; set; }
 
         public void StartListening()
         {
-            Thread listenThread = new Thread(new ThreadStart(ListenToClient));
-            listenThread.Start();
+            //Thread listenThread = new Thread(new ThreadStart(ListenToClient));
+            //listenThread.Start();
+            ListenThread = new Thread(new ThreadStart(ListenToClient));
+            ListenThread.Start();
         }
 
         private void ListenToClient()
