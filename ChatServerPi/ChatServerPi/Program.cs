@@ -39,11 +39,19 @@ namespace ChatServerPi
 
         internal static void Broadcast (string userName, string message)
         {
+            byte[] responseMessage = Encoding.Unicode.GetBytes(userName + "$" + message);
             foreach (ChatUser client in clientList)
             {
-                NetworkStream stream = client.Client.GetStream();
-                byte[] responseMessage = Encoding.Unicode.GetBytes(userName + "$" + message);
-                stream.Write(responseMessage, 0, responseMessage.Length);
+                try
+                {
+                    NetworkStream stream = client.Client.GetStream();
+                    stream.Write(responseMessage, 0, responseMessage.Length);
+                }
+                catch
+                {
+                    Console.WriteLine("ERROR VID BROADCAST!");
+                }
+
             }
         }
 
@@ -73,13 +81,14 @@ namespace ChatServerPi
 
             while (true)
             {
-                byte[] messageBuffer = new byte[256];
+                byte[] messageBuffer = new byte[512];
                 try
                 {
                     stream.Read(messageBuffer, 0, messageBuffer.Length);
                 }
                 catch (Exception e)
                 {
+                    //stream.Close();
                     Console.WriteLine(e.Message);
                     Program.DisconnectUser(this);
                     return;
