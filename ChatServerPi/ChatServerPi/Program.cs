@@ -61,7 +61,7 @@ namespace ChatServerPi
             user.Client.Close();
             clientList.Remove(user);
             Broadcast("", user.UserName + " has left the chat.");
-            user.ListenThread.Abort();
+            //user.ListenThread.Abort();
             user = null;
         }
     }
@@ -69,13 +69,13 @@ namespace ChatServerPi
     {
         public string UserName { get; set; }
         public TcpClient Client { get; set; }
-        public Thread ListenThread { get; set; }
+        //public Thread ListenThread { get; set; }
 
         public void StartListening()
         {
             //Thread listenThread = new Thread(new ThreadStart(ListenToClient));
             //listenThread.Start();
-            ListenThread = new Thread(new ThreadStart(ListenToClient));
+            Thread ListenThread = new Thread(new ThreadStart(ListenToClient));
             ListenThread.Start();
         }
 
@@ -86,19 +86,16 @@ namespace ChatServerPi
             while (true)
             {
                 byte[] messageBuffer = new byte[512];
-                try
-                {
-                    stream.Read(messageBuffer, 0, messageBuffer.Length);
-                }
-                catch (Exception e)
-                {
-                    //stream.Close();
-                    Console.WriteLine(e.Message);
-                    Program.DisconnectUser(this);
-                    return;
-                }
+                int messageSize = stream.Read(messageBuffer, 0, messageBuffer.Length);
 
-                //Varför broadcastas ändå ett tomt meddelande? Undersök.
+                if (messageSize <= 0)
+                {                    
+                    //stream.Close();
+                    Program.DisconnectUser(this);
+                    break;
+                }
+                //Varför broadcastas ändå ett tomt meddelande? Undersök. -- FIXAT
+                Console.WriteLine("Storlek: " + messageSize);
                 string msg = Encoding.Unicode.GetString(messageBuffer, 0, messageBuffer.Length).TrimEnd('\0');
                 Console.WriteLine(UserName + " wrote: " + msg);
                 Program.Broadcast(UserName, msg);
