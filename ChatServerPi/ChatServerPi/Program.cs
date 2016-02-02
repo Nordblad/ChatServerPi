@@ -24,12 +24,12 @@ namespace ChatServerPi
                 TcpClient client = listener.AcceptTcpClient(); //Kommer fastna där, står och väntar.
                 NetworkStream stream = client.GetStream();
                 //Få användarnamn
-                byte[] recievedData = new byte[256];
+                byte[] recievedData = new byte[512];
                 stream.Read(recievedData, 0, recievedData.Length);
                 //Spara den nyuppkopplade användaren
                 ChatUser user = new ChatUser { UserName = Encoding.Unicode.GetString(recievedData).TrimEnd('\0'), Client = client };
                 clientList.Add(user);
-                Console.WriteLine("User " + user.UserName + " joined.");
+                Console.WriteLine("*** User " + user.UserName + " joined. ***");
                 Broadcast("", user.UserName + " joined the chat.");
                 user.StartListening();
             }
@@ -48,9 +48,10 @@ namespace ChatServerPi
 
         internal static void DisconnectUser (ChatUser user)
         {
-            Console.WriteLine("Client " + user.UserName + " disconnected.");
+            Console.WriteLine("*** Client " + user.UserName + " disconnected. ***");
             user.Client.Close();
             clientList.Remove(user);
+            Broadcast("", user.UserName + " has left the chat.");
             user = null;
         }
     }
