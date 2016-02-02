@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Net;
 using System.Net.Sockets;
+using System.Threading;
 
 namespace ChatServerPi
 {
@@ -33,7 +34,7 @@ namespace ChatServerPi
                 Broadcast("", user.UserName + " joined the chat.");
                 user.StartListening();
             }
-            Console.ReadKey();
+            //Console.ReadKey();
         }
 
         internal static void Broadcast (string userName, string message)
@@ -53,6 +54,42 @@ namespace ChatServerPi
             clientList.Remove(user);
             Broadcast("", user.UserName + " has left the chat.");
             user = null;
+        }
+    }
+    class ChatUser
+    {
+        public string UserName { get; set; }
+        public TcpClient Client { get; set; }
+
+        public void StartListening()
+        {
+            Thread listenThread = new Thread(new ThreadStart(ListenToClient));
+            listenThread.Start();
+        }
+
+        private void ListenToClient()
+        {
+            NetworkStream stream = Client.GetStream();
+
+            while (true)
+            {
+                byte[] messageBuffer = new byte[256];
+                try
+                {
+                    stream.Read(messageBuffer, 0, messageBuffer.Length);
+                }
+                catch (Exception e)
+                {
+                    Console.WriteLine(e.Message);
+                    Program.DisconnectUser(this);
+                    return;
+                }
+
+                //Varför broadcastas ändå ett tomt meddelande? Undersök.
+                string msg = Encoding.Unicode.GetString(messageBuffer, 0, messageBuffer.Length).TrimEnd('\0');
+                Console.WriteLine(UserName + " wrote: " + msg);
+                Program.Broadcast(UserName, msg);
+            }
         }
     }
 }
