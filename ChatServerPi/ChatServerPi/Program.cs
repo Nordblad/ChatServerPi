@@ -82,14 +82,21 @@ namespace ChatServerPi
 
             while (true)
             {
-                byte[] messageBuffer = new byte[512];
-                int messageSize = stream.Read(messageBuffer, 0, messageBuffer.Length);
+                try
+                {
+                    byte[] messageBuffer = new byte[512];
+                    int messageSize = stream.Read(messageBuffer, 0, messageBuffer.Length);
 
-                if (messageSize <= 0)
-                {                    
-                    //stream.Close();
-                    Program.DisconnectUser(this);
-                    break;
+                    if (messageSize <= 0)
+                    {                    
+                        stream.Close();
+                        Program.DisconnectUser(this);
+                        break;
+                    }
+                }
+                catch
+                {
+                    Console.WriteLine("ASDASD");
                 }
                 string msg = Encoding.Unicode.GetString(messageBuffer, 0, messageBuffer.Length).TrimEnd('\0');
                 Console.WriteLine(UserName + " wrote: " + msg);
