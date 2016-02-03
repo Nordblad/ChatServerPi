@@ -98,7 +98,7 @@ namespace ChatServerPi
                         Console.WriteLine("Ett: " + messageSize + ", socket: " + Client.Connected);
                         stream.Close();
                         Program.DisconnectUser(this);
-                        break;
+                        return;
                     }
                 }
                 catch
