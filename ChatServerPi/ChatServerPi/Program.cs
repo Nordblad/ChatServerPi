@@ -91,7 +91,7 @@ namespace ChatServerPi
                 try
                 {
                     int messageSize = stream.Read(messageBuffer, 0, messageBuffer.Length);
-
+                    Console.WriteLine("SIZE: " + messageSize);
                     if (messageSize <= 0)
                     {
                         //ASDASDASDASD
