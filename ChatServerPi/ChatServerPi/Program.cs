@@ -82,9 +82,9 @@ namespace ChatServerPi
 
             while (true)
             {
+                byte[] messageBuffer = new byte[512];
                 try
                 {
-                    byte[] messageBuffer = new byte[512];
                     int messageSize = stream.Read(messageBuffer, 0, messageBuffer.Length);
 
                     if (messageSize <= 0)
