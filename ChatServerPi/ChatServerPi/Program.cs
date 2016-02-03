@@ -33,7 +33,7 @@ namespace ChatServerPi
                 ChatClient user = new ChatClient { UserName = Encoding.Unicode.GetString(recievedData).TrimEnd('\0'), Client = client };
                 clientList.Add(user);
                 Console.WriteLine("*** User " + user.UserName + " joined. ***");
-                SendMessage(user.Client, "", "Välkommen till " + serverName + ". Det finns " + (clientList.Count-1) + " andra användare här.");
+                SendMessage(user.Client, "", "Welcome to " + serverName + "! Online users: " + (clientList.Count-1) + ".");
                 Broadcast("", user.UserName + " joined the chat.");
                 user.StartListening();
             }
@@ -88,7 +88,7 @@ namespace ChatServerPi
             Console.WriteLine("*** Client " + user.UserName + " disconnected. ***");
             user.Client.Close();
             clientList.Remove(user);
-            Broadcast("", user.UserName + " has left the chat.");
+            Broadcast("", user.UserName + " left the chat.");
 
             //PLACERA OM!
             //user = null;
@@ -125,7 +125,7 @@ namespace ChatServerPi
                 }
                 catch
                 {
-                    Console.WriteLine("ASDASD");
+                    Console.WriteLine("ERROR I MOTTAGANDET DET HÄR SKA INTE HÄNDA AJAJ");
                     break;
                 }
                 string msg = Encoding.Unicode.GetString(messageBuffer, 0, messageBuffer.Length).TrimEnd('\0');
