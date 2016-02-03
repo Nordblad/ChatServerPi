@@ -59,7 +59,10 @@ namespace ChatServerPi
         {
             Console.WriteLine("*** Client " + user.UserName + " disconnected. ***");
             user.Client.Close();
+            //ASDASD
+            Console.WriteLine("Två: users: " + clientList.Count);
             clientList.Remove(user);
+            Console.WriteLine("Tre: users: " + clientList.Count);
             Broadcast("", user.UserName + " has left the chat.");
             //user.ListenThread.Abort();
             user = null;
@@ -88,7 +91,8 @@ namespace ChatServerPi
                     int messageSize = stream.Read(messageBuffer, 0, messageBuffer.Length);
 
                     if (messageSize <= 0)
-                    {                    
+                    {
+                        Console.WriteLine("Ett: " + messageSize);
                         stream.Close();
                         Program.DisconnectUser(this);
                         break;
