@@ -16,10 +16,10 @@ namespace ChatServerPi
 
         static void Main(string[] args)
         {
-            serverName = args.Length > 0 ? args[0] : "Default server name";
+            serverName = args.Length > 0 ? args[0] : "Default";
             TcpListener listener = new TcpListener(IPAddress.Any, 5000);
             listener.Start();
-            Console.WriteLine("Server '" + serverName +  "'up and running!");
+            Console.WriteLine("Server '" + serverName +  "' up and running!");
 
             while (true)
             {
@@ -87,13 +87,8 @@ namespace ChatServerPi
         {
             Console.WriteLine("*** Client " + user.UserName + " disconnected. ***");
             user.Client.Close();
-            //ASDASD
-            Console.WriteLine("Två: users: " + clientList.Count);
             clientList.Remove(user);
-            //QASDASDASDASD
-            Console.WriteLine("Tre: users: " + clientList.Count);
             Broadcast("", user.UserName + " has left the chat.");
-            //user.ListenThread.Abort();
 
             //PLACERA OM!
             //user = null;
@@ -120,19 +115,18 @@ namespace ChatServerPi
                 try
                 {
                     int messageSize = stream.Read(messageBuffer, 0, messageBuffer.Length);
-                    Console.WriteLine("SIZE: " + messageSize);
+                    //Console.WriteLine("SIZE: " + messageSize);
                     if (messageSize <= 0)
                     {
-                        //ASDASDASDASD
-                        Console.WriteLine("Ett: " + messageSize + ", socket: " + Client.Connected);
                         stream.Close();
                         Program.DisconnectUser(this); //KAN INTE TAS BORT MEDANS DEN KÖRS FRÅGETECKEN?
-                        return;
+                        break;
                     }
                 }
                 catch
                 {
                     Console.WriteLine("ASDASD");
+                    break;
                 }
                 string msg = Encoding.Unicode.GetString(messageBuffer, 0, messageBuffer.Length).TrimEnd('\0');
                 Console.WriteLine(UserName + " wrote: " + msg);
