@@ -50,6 +50,7 @@ namespace ChatServerPi
                 catch
                 {
                     Console.WriteLine("ERROR VID BROADCAST! " + client.UserName + ", " + clientList.Count);
+                    Console.WriteLine("Message:[" + message + "], user: [" + userName + "]");
                 }
 
             }
@@ -62,6 +63,7 @@ namespace ChatServerPi
             //ASDASD
             Console.WriteLine("Två: users: " + clientList.Count);
             clientList.Remove(user);
+            //QASDASDASDASD
             Console.WriteLine("Tre: users: " + clientList.Count);
             Broadcast("", user.UserName + " has left the chat.");
             //user.ListenThread.Abort();
@@ -92,7 +94,8 @@ namespace ChatServerPi
 
                     if (messageSize <= 0)
                     {
-                        Console.WriteLine("Ett: " + messageSize);
+                        //ASDASDASDASD
+                        Console.WriteLine("Ett: " + messageSize + ", socket: " + Client.Connected);
                         stream.Close();
                         Program.DisconnectUser(this);
                         break;
