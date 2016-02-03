@@ -40,6 +40,8 @@ namespace ChatServerPi
         internal static void Broadcast (string userName, string message)
         {
             byte[] responseMessage = Encoding.Unicode.GetBytes(userName + "$" + message);
+            //FELSÖKNINGFELSÖKNINGFELSÖKNING
+            Console.WriteLine("Broadcasting to users: " + clientList.Count);
             foreach (ChatUser client in clientList)
             {
                 try
@@ -97,7 +99,7 @@ namespace ChatServerPi
                         //ASDASDASDASD
                         Console.WriteLine("Ett: " + messageSize + ", socket: " + Client.Connected);
                         stream.Close();
-                        Program.DisconnectUser(this);
+                        Program.DisconnectUser(this); //KAN INTE TAS BORT MEDANS DEN KÖRS FRÅGETECKEN?
                         return;
                     }
                 }
