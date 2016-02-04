@@ -123,9 +123,9 @@ namespace ChatServerPi
                         break;
                     }
                 }
-                catch
+                catch (Exception e)
                 {
-                    Console.WriteLine("ERROR I MOTTAGANDET DET HÄR SKA INTE HÄNDA AJAJ");
+                    Console.WriteLine("ERROR 1: " + e.Message);
                     break;
                 }
                 string msg = Encoding.Unicode.GetString(messageBuffer, 0, messageBuffer.Length).TrimEnd('\0');
