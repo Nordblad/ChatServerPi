@@ -86,6 +86,7 @@ namespace ChatServerPi
         internal static void DisconnectUser (ChatClient user)
         {
             Console.WriteLine("*** Client " + user.UserName + " disconnected. ***");
+            user.Client.GetStream().Close();
             user.Client.Close();
             clientList.Remove(user);
             Broadcast("", user.UserName + " left the chat.");
@@ -115,18 +116,16 @@ namespace ChatServerPi
                 try
                 {
                     int messageSize = stream.Read(messageBuffer, 0, messageBuffer.Length);
-                    Console.WriteLine("SIZE: " + messageSize);
+                    //Console.WriteLine("SIZE: " + messageSize);
                     if (messageSize <= 0)
                     {
-                        stream.Close();
                         Program.DisconnectUser(this); //KAN INTE TAS BORT MEDANS DEN KÖRS FRÅGETECKEN?
                         break;
                     }
                 }
-                catch (Exception e)
+                catch // (Exception e)
                 {
-                    Console.WriteLine("ERROR 1: " + e.Message);
-                    stream.Close();
+                    //Console.WriteLine("ERROR 1: " + e.Message);
                     Program.DisconnectUser(this); //KAN INTE TAS BORT MEDANS DEN KÖRS FRÅGETECKEN?
                     break;
                 }
