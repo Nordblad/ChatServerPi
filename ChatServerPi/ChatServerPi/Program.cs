@@ -42,22 +42,6 @@ namespace ChatServerPi
 
         internal static void Broadcast (string userName, string message)
         {
-            //byte[] responseMessage = Encoding.Unicode.GetBytes(userName + "$" + message);
-            ////FELSÖKNINGFELSÖKNINGFELSÖKNING
-            //Console.WriteLine("Broadcasting to users: " + clientList.Count);
-            //foreach (ChatUser client in clientList)
-            //{
-            //    try
-            //    {
-            //        NetworkStream stream = client.Client.GetStream();
-            //        stream.Write(responseMessage, 0, responseMessage.Length);
-            //    }
-            //    catch
-            //    {
-            //        Console.WriteLine("ERROR VID BROADCAST! " + client.UserName + ", " + clientList.Count);
-            //        Console.WriteLine("Message:[" + message + "], user: [" + userName + "]");
-            //    }
-            //}
             foreach (ChatClient user in clientList)
             {
                 SendMessage(user.Client, userName, message);
