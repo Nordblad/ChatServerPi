@@ -126,6 +126,8 @@ namespace ChatServerPi
                 catch (Exception e)
                 {
                     Console.WriteLine("ERROR 1: " + e.Message);
+                    stream.Close();
+                    Program.DisconnectUser(this); //KAN INTE TAS BORT MEDANS DEN KÖRS FRÅGETECKEN?
                     break;
                 }
                 string msg = Encoding.Unicode.GetString(messageBuffer, 0, messageBuffer.Length).TrimEnd('\0');
