@@ -33,7 +33,7 @@ namespace ChatServerPi
                 ChatClient user = new ChatClient { UserName = Encoding.Unicode.GetString(recievedData).TrimEnd('\0'), Client = client };
                 clientList.Add(user);
                 Console.WriteLine("*** User " + user.UserName + " joined. ***");
-                SendMessage(user.Client, "", "Welcome to " + serverName + "! Online users: " + (clientList.Count-1) + ".");
+                SendMessage(user.Client, "", "Welcome to " + serverName + "! Online users: " + (clientList.Count) + ".");
                 Broadcast("", user.UserName + " joined the chat.");
                 user.StartListening();
             }
